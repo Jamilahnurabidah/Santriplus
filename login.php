@@ -14,7 +14,7 @@ if (isset($_POST['login'])) {
         $_SESSION['username'] = $username;
         $_SESSION['nama_admin'] = $data['nama_admin'];
         $_SESSION['status'] = "login";
-        header("location:index.php");
+        header("location:dashboard.php");
     } else {
         echo "<script>alert('Username atau Password salah!');</script>";
     }
