@@ -1,8 +1,16 @@
 <?php
-session_start();
+// 1. Cek status sesi terlebih dahulu agar tidak bentrok di server Vercel
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// 2. Hubungkan ke database
 include 'koneksi.php';
-if($_SESSION['status'] != "login"){
-    header("location:login.php");
+
+// 3. Amankan halaman, jika belum login lempar ke login.php
+if (!isset($_SESSION['status']) || $_SESSION['status'] != "login") {
+    header("location: login.php");
+    exit(); // Wajib ditambahkan setelah header redirect
 }
 ?>
 <!DOCTYPE html>
@@ -21,6 +29,7 @@ if($_SESSION['status'] != "login"){
             <a href="dashboard.php" class="menu-item"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
             <a href="index.php" class="menu-item"><i class="fas fa-user-graduate"></i> Data Santri</a>
             <a href="administrasi.php" class="menu-item"><i class="fas fa-money-bill-wave"></i> Administrasi</a>
+        
         <!-- Menu Utama dengan Dropdown -->
         <div class="menu-item">
             <button class="dropdown-btn" onclick="toggleDropdown()">
@@ -28,25 +37,28 @@ if($_SESSION['status'] != "login"){
                 <span>Absensi Santri</span>
                 <i class="fas fa-chevron-down arrow-icon"></i>
             </button>
-        <div class="dropdown-container" id="dropdownAbsensi">
-            <a href="absensi_madin.php">
-                <i class="fas fa-book-open"></i> Presensi Madin
-            </a>
-            <a href="absensi_sholat.php">
-                <i class="fas fa-mosque"></i> Presensi Sholat
-            </a>
+            <div class="dropdown-container" id="dropdownAbsensi">
+                <a href="absensi_madin.php">
+                    <i class="fas fa-book-open"></i> Presensi Madin
+                </a>
+                <a href="absensi_sholat.php">
+                    <i class="fas fa-mosque"></i> Presensi Sholat
+                </a>
+            </div>
         </div>
-    </div>
+        
         <div class="menu-section-title">Setting</div>
             <a href="logout.php" class="menu-item" style="color: #e74c3c;"><i class="fas fa-sign-out-alt"></i> Keluar</a>
-        
-        </div>
+    </div>
+
     <div class="main-content">
         <header>
             <div class="breadcrumb">ROUDLOTUL ANWAR</div>
             <div class="user-profile">
-                <img src="SantriPlus/gambar/logo-pesantren" alt="logo">
-                <span><?php echo $_SESSION['nama_admin']; ?></span>
+                <!-- Memperbaiki jalur gambar karena folder SantriPlus sekarang menjadi root utama -->
+                <img src="/gambar/logo-pesantren.png" alt="logo">
+                <!-- Mengamankan variabel nama admin agar tidak memicu error global -->
+                <span><?php echo isset($_SESSION['nama_admin']) ? $_SESSION['nama_admin'] : 'Admin'; ?></span>
             </div>
         </header>
         <div class="content-body">
@@ -63,7 +75,7 @@ if($_SESSION['status'] != "login"){
         margin: 0;                          /* Menghilangkan jarak luar kotak */
     }
 
-        /* Styling Induk Dropdown */
+    /* Styling Induk Dropdown */
     .dropdown-container {
         display: none; /* Sembunyi secara default */
         background-color: #2c3e50; /* Warna sedikit lebih gelap dari sidebar */
@@ -101,7 +113,7 @@ if($_SESSION['status'] != "login"){
         display: block !important;
     }
 
-        /* Menghilangkan garis bawah pada semua link di sidebar */
+    /* Menghilangkan garis bawah pada semua link di sidebar */
     .sidebar a, 
     .dropdown-btn {
         display: flex; /* Mengaktifkan mode flexbox */
@@ -142,7 +154,7 @@ if($_SESSION['status'] != "login"){
     }
 
     .dropdown-btn {
-        background: glob !important;
+        background: transparent !important; /* Memperbaiki typo 'glob' menjadi 'transparent' */
         border: none !important;
         padding: 12px 20px; /* Samakan dengan padding menu Data Santri */
         display: flex;
@@ -152,4 +164,4 @@ if($_SESSION['status'] != "login"){
         cursor: pointer;
         transition: background 0.3s;
     }
- </style>
+</style>
