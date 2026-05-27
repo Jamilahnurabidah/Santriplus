@@ -1,13 +1,29 @@
 {
   "functions": {
-    "api/*.php": {
+    "api/**/*.php": {
       "runtime": "vercel-php@0.7.1"
     }
   },
   "routes": [
     {
+      "src": "/gambar/(.*)",
+      "dest": "/gambar/$1"
+    },
+    {
+      "src": "/style.css",
+      "dest": "/style.css"
+    },
+    {
+      "src": "/gaya.css",
+      "dest": "/gaya.css"
+    },
+    {
+      "src": "/login.php",
+      "dest": "/api/login.php"
+    },
+    {
       "src": "/(.*)",
-      "dest": "/api/index.php"
+      "dest": "/api/$1"
     }
   ]
 }
