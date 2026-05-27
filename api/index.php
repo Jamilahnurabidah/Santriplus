@@ -1,6 +1,6 @@
-
-<?php include 'header.php'; ?>
-
+<?php
+include 'header.php';
+?>
 <div class="section-header">
     <h1 class="page-title">Data Santri</h1>
     <div class="action-buttons">
