@@ -1,5 +1,6 @@
 <?php
-// 1. Cek status sesi terlebih dahulu agar tidak bentrok di server Vercel
+ob_start(); // Trik Sakti: Tahan semua output agar tidak memicu error header
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
